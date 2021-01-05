@@ -1,0 +1,16 @@
+---
+version: "3.8"
+
+services:
+
+  sp_service:
+    image: linuxserver/smokeping
+    environment:
+      - PUID=1001
+      - PGID=1001
+      - TZ=Europe/London
+    volumes:
+      - /volumes/smokeping/config:/config
+      - /volumes/smokeping/data:/data
+    ports:
+      - 8081:80
