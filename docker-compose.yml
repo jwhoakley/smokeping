@@ -1,0 +1,30 @@
+---
+version: "2.1"
+
+volumes:
+  nfs-smokeping-conf:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.1.250,rsize=65536,wsize=65536,timeo=14,tcp,rw,noatime"
+      device: ":/volume1/lab/volumes/smokeping/config"
+  nfs-smokeping-data:
+    driver: local
+    driver_opts:
+      type: "nfs"
+      o: "addr=192.168.1.250,rsize=65536,wsize=65536,timeo=14,tcp,rw,noatime"
+      device: ":/volume1/lab/volumes/smokeping/data"
+
+services:
+  smokeping:
+    image: linuxserver/smokeping
+    environment:
+      - PUID=1001
+      - PGID=1001
+      - TZ=Europe/London
+    volumes:
+      - nfs-smokeping-conf:/config
+      - nfs-smokeping-data:/data
+    ports:
+      - 8081:80
+    restart: unless-stopped
